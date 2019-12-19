@@ -1,4 +1,4 @@
-customElements.define('edit-word',
+customElements.define('read-ability',
   class extends HTMLElement {
     constructor() {
       super();
