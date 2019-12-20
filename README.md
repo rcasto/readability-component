@@ -7,6 +7,10 @@ To determine the average time to read a passage, an average reading speed of 200
 
 **Note:** A heuristic is utilized to determine the number of syllables in a word, so the readability level may not be exactly what it would be if you were to manually calculate it, but it should not be too far off.
 
+## Usage
+In order to integrate this web component into your web application you'll need to do the following:
+1. Add a `<script>` tag to your HTML
+
 ## Resources
 - https://www.howmanysyllables.com/howtocountsyllables
 - https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests
