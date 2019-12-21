@@ -4,7 +4,7 @@
   "description": "This is a fairly simple web component that can be used to wrap around your content and determine its readability level, as well as the average time it would take to read.",
   "main": "index.js",
   "scripts": {
-    "start": "http-server ./src"
+    "start": "http-server ./"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
   "license": "MIT",

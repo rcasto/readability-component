@@ -9,7 +9,7 @@ const vowels = new Set([
 export function getReadability(text) {
     const numWords = getNumWords(text);
     const numSentences = getNumSentences(text);
-    const numSyllables = -1;
+    const numSyllables = getNumSyllablesFromText(text);
 
     return 206.835 - 1.015 * (numWords / numSentences) - 84.6 * (numSyllables / numWords);
 }
