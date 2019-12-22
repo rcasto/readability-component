@@ -10,7 +10,7 @@ const templateContent = `
       margin-left: auto;
     }
   </style>
-  <slot name="readable-text">readable-text slot not filled.</slot>
+  <slot name="readable-text"></slot>
 `;
 
 const template = document.createElement('template');
