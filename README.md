@@ -1,20 +1,34 @@
 # Readability Web Component
-This is a fairly simple web component that can be used to wrap around your content and determine its readability level, as well as the average time it would take to read.
+A web component that can be used to wrap around your text content and determine its readability level, as well as the average time it would take to read.
 
 To determine the readability level the [Flesch Kincaid readability test](https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests) is used.
 
-To determine the average time to read a passage, an average reading speed of 180 words per minute is used.
+To determine the average time to read the content, an average reading speed of 180 words per minute is used.
 
-**Note:** A heuristic is utilized to determine the number of syllables in a word, so the readability level may not be exactly what it would be if you were to manually calculate it, but it should not be too far off.
+**Note:** A heuristic is utilized to determine the number of syllables in a word, so the readability level may not be exactly what it would be if you were to manually calculate it, but it should not be terribly far off.
 
-## Usage
+## Integration
 In order to integrate this web component into your web application you can use one of the below methods.
 
 ### Method 1
-1. Add a `<script>` tag to your HTML
+```html
+<script defer src="https://cdn.jsdelivr.net/gh/rcasto/readability-component/dist/readability.min.js"></script>
+```
 
 ### Method 2
-1. Add 
+```html
+<script type="module" src="https://cdn.jsdelivr.net/gh/rcasto/readability-component/src/readability.mjs"></script>
+```
+
+## Usage
+```html
+<read-ability>
+    <!-- This can be anything, this is your content -->
+    <!-- Make sure to add slot="readable-text" attribute to your content if you also want it to be rendered -->
+    <!-- If you neglect to add the slot, then the readability of any text contained by the component is computed, without displaying it -->
+    <p slot="readable-text">The cat sat on the mat.</p>
+</read-ability>
+```
 
 ## Browser Support
 - [Web Components](https://caniuse.com/#search=web%20components)  
