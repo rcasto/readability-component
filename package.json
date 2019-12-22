@@ -4,12 +4,14 @@
   "description": "This is a fairly simple web component that can be used to wrap around your content and determine its readability level, as well as the average time it would take to read.",
   "main": "index.js",
   "scripts": {
-    "start": "http-server ./"
+    "start": "http-server ./",
+    "build": "rollup src/readability.mjs --file dist/readability.js --format iife"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "http-server": "^0.12.0"
+    "http-server": "^0.12.0",
+    "rollup": "^1.27.14"
   }
 }
