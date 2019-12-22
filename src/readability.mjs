@@ -31,7 +31,7 @@ class Readability extends HTMLElement {
     const readableText = this.textContent.trim();
 
     readabilityLevelDiv.textContent = getReadability(readableText);
-    readabilityAverageReadingTimeDiv.textContent = `${getAverageTimeToRead(readableText)} minutes`;
+    readabilityAverageReadingTimeDiv.textContent = `${getAverageTimeToRead(readableText)} minutes to read`;
 
     readabilityDiv.className = 'readability';
     readabilityDiv.appendChild(readabilityLevelDiv);
