@@ -1,6 +1,15 @@
-import { getReadability } from './textHelpers.mjs';
+import { getReadability, getAverageTimeToRead } from './textHelpers.mjs';
 
 const templateContent = `
+  <style>
+    .readability {
+      display: flex;
+      flex-direction: column;
+    }
+    .readability * {
+      margin-left: auto;
+    }
+  </style>
   <slot name="readable-text">readable-text slot not filled.</slot>
 `;
 
@@ -15,12 +24,21 @@ class Readability extends HTMLElement {
     const shadowRoot = this.attachShadow({
       mode: 'open'
     });
-    const span = document.createElement('span');
+    const readabilityDiv = document.createElement('div');
+    const readabilityLevelDiv = document.createElement('div');
+    const readabilityAverageReadingTimeDiv = document.createElement('div');
 
-    span.textContent = getReadability(this.textContent.trim());
+    const readableText = this.textContent.trim();
+
+    readabilityLevelDiv.textContent = getReadability(readableText);
+    readabilityAverageReadingTimeDiv.textContent = `${getAverageTimeToRead(readableText)} minutes`;
+
+    readabilityDiv.className = 'readability';
+    readabilityDiv.appendChild(readabilityLevelDiv);
+    readabilityDiv.appendChild(readabilityAverageReadingTimeDiv);
 
     shadowRoot.appendChild(templateContent.cloneNode(true));
-    shadowRoot.appendChild(span);
+    shadowRoot.appendChild(readabilityDiv);
   }
 }
 
