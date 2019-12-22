@@ -5,15 +5,34 @@ const vowels = new Set([
     'o',
     'u'
 ]);
+const diphthongs = new Set([
+    'ee',
+    'ea',
+    'oo',
+    'ou',
+    'ow',
+    'ie',
+    'ay',
+    'oi',
+]);
+const triphthongs = new Set([
+    'eau',
+    'iou',
+    'our',
+    'ire',
+    'ier'
+]);
 
 // words per minute
-const averageReadingSpeed = 200;
+const averageReadingSpeed = 180;
 
 export function getAverageTimeToRead(text) {
     return (text || '').length / averageReadingSpeed;
 }
 
 export function getReadability(text) {
+    text = normalizeText(text);
+
     const numWords = getNumWords(text);
     const numSentences = getNumSentences(text);
     const numSyllables = getNumSyllablesFromText(text);
@@ -60,12 +79,31 @@ function getNumSyllablesFromText(text, wordDelimiter = ' ') {
 function getNumSyllables(word) {
     const wordLength = (word || '').length;
     let numSyllables = 0;
+    let tmpStr;
 
     for (let i = 0; i < wordLength; i++) {
         if (vowels.has(word[i])) {
             numSyllables++;
         }
+        if (i + 1 < wordLength) {
+            tmpStr = word.substring(i, i + 2);
+            if (diphthongs.has(tmpStr)) {
+                numSyllables--;
+            }
+        }
+        if (i + 2 < wordLength) {
+            tmpStr = word.substring(i, i + 3);
+            if (triphthongs.has(tmpStr)) {
+                numSyllables--;
+            }
+        }
     }
 
     return numSyllables;
+}
+
+function normalizeText(text) {
+    return (text || '')
+        .trim()
+        .toLowerCase();
 }

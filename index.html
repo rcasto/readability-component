@@ -5,16 +5,32 @@
   <meta charset="utf-8">
   <title>Readability Web Component</title>
 
+  <style>
+    p {
+      background-color: aliceblue;
+    }
+  </style>
+
   <script type="module" src="src/readability.mjs"></script>
 </head>
 
 <body>
+  <!-- Readability should be around 116 -->
   <read-ability>
     <p slot="readable-text">The cat sat on the mat.</p>
   </read-ability>
-
+  <!-- Readability should be around 69 -->
   <read-ability>
-    <div slot="readable-text">
+    <div>This sentence, taken as a reading passage unto itself, is being used to prove a point.</div>
+  </read-ability>
+  <!-- Readability should be around 37.5 -->
+  <read-ability>
+    <div>The Australian platypus is seemingly a hybrid of a mammal and reptilian creature.</div>
+  </read-ability>
+  <!-- Readability should be around 57.9 -->
+  <read-ability>
+    <!-- <div slot="readable-text"> -->
+    <div>
 MOBY-DICK 
 
 CHAPTER I 
