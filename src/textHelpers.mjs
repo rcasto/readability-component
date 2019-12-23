@@ -27,7 +27,11 @@ const triphthongs = new Set([
 const averageReadingSpeed = 180;
 
 export function getAverageTimeToRead(text) {
-    return (text || '').length / averageReadingSpeed;
+    const averageTime = Math.ceil((text || '').length / averageReadingSpeed);
+    if (averageTime === 1) {
+        return `About 1 minute to read`;
+    }
+    return `About ${averageTime} minutes to read`;
 }
 
 export function getReadability(text) {

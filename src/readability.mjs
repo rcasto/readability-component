@@ -10,11 +10,11 @@ const templateContent = `
       margin-left: auto;
     }
   </style>
-  <slot name="readable-text"></slot>
   <div class="readability-container">
     <div class="readability-level"></div>
     <div class="readability-time"></div>
   </div>
+  <slot name="readable-text"></slot>
 `;
 
 const template = document.createElement('template');
@@ -47,7 +47,7 @@ class Readability extends HTMLElement {
     const readabilityAverageReadingTimeDiv = this.shadowRoot.querySelector('.readability-time');
 
     readabilityLevelDiv.textContent = getReadability(text);
-    readabilityAverageReadingTimeDiv.textContent = `${getAverageTimeToRead(text)} minutes to read`;
+    readabilityAverageReadingTimeDiv.textContent = getAverageTimeToRead(text);
   }
 }
 
