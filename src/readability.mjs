@@ -2,41 +2,52 @@ import { getReadability, getAverageTimeToRead } from './textHelpers.mjs';
 
 const templateContent = `
   <style>
-    .readability {
+    .readability-container {
       display: flex;
       flex-direction: column;
     }
-    .readability * {
+    .readability-container * {
       margin-left: auto;
     }
   </style>
   <slot name="readable-text"></slot>
+  <div class="readability-container">
+    <div class="readability-level"></div>
+    <div class="readability-time"></div>
+  </div>
 `;
 
 const template = document.createElement('template');
 template.innerHTML = templateContent;
 
 class Readability extends HTMLElement {
+  observer;
+
   constructor() {
     super();
 
-    const templateContent = template.content;
+    this.observer = new MutationObserver(() => this.setReadability(this.textContent));
+  }
+  connectedCallback() {
     const shadowRoot = this.attachShadow({
       mode: 'open'
     });
-    const readabilityDiv = document.createElement('div');
-    const readabilityLevelDiv = document.createElement('div');
-    const readabilityAverageReadingTimeDiv = document.createElement('div');
+    const templateClone = template.content.cloneNode(true);
 
-    readabilityLevelDiv.textContent = getReadability(this.textContent);
-    readabilityAverageReadingTimeDiv.textContent = `${getAverageTimeToRead(this.textContent)} minutes to read`;
+    shadowRoot.appendChild(templateClone);
+    this.setReadability(this.textContent);
 
-    readabilityDiv.className = 'readability';
-    readabilityDiv.appendChild(readabilityLevelDiv);
-    readabilityDiv.appendChild(readabilityAverageReadingTimeDiv);
+    this.observer.observe(this, {
+      subtree: true,
+      childList: true,
+    });
+  }
+  setReadability(text) {
+    const readabilityLevelDiv = this.shadowRoot.querySelector('.readability-level');
+    const readabilityAverageReadingTimeDiv = this.shadowRoot.querySelector('.readability-time');
 
-    shadowRoot.appendChild(templateContent.cloneNode(true));
-    shadowRoot.appendChild(readabilityDiv);
+    readabilityLevelDiv.textContent = getReadability(text);
+    readabilityAverageReadingTimeDiv.textContent = `${getAverageTimeToRead(text)} minutes to read`;
   }
 }
 

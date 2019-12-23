@@ -19,6 +19,23 @@
 </head>
 
 <body>
+  <textarea id="text-input"></textarea>
+  <read-ability>
+    <div id="text-content" slot="readable-text"></div>
+  </read-ability>
+  <script>
+    const textInput = document.getElementById('text-input');
+    const textContent = document.getElementById('text-content');
+    textInput.oninput = () => {
+      textContent.textContent = textInput.value;
+    };
+  </script>
+
+  <hr>
+  <read-ability>
+    <div slot="readable-text"></textarea>
+  </read-ability>
+  <hr>
   <!-- Readability should be around 116 -->
   <read-ability>
     <p slot="readable-text">The cat sat on the mat.</p>
