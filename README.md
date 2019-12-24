@@ -10,12 +10,12 @@ To determine the average time to read the content, an average reading speed of 1
 ## Integration
 In order to integrate this web component into your web application you can use one of the below methods.
 
-### Method 1
+### Method 1 - Non-module script tag
 ```html
 <script defer src="https://cdn.jsdelivr.net/gh/rcasto/readability-component/dist/readability.min.js"></script>
 ```
 
-### Method 2
+### Method 2 - Module script tag
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/gh/rcasto/readability-component/src/readability.mjs"></script>
 ```
