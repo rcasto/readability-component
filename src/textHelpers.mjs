@@ -22,6 +22,8 @@ const triphthongs = new Set([
     'ire',
     'ier'
 ]);
+const wordDelimiterRegex = /\s+/;
+const sentenceDelimiterRegex = /[\.\?!\n]\n?/;
 
 // words per minute
 const averageReadingSpeed = 180;
@@ -58,23 +60,32 @@ function getReadabilityMapping(readability) {
         return 'Fairly difficult to read';
     } else if (readability < 50 && readability >= 30) {
         return 'Difficult to read';
-    } else {
-        return 'Very difficult to read';
     }
+    return 'Very difficult to read';
 }
 
-function getNumWords(text, wordDelimiter = ' ') {
+function getWords(text) {
     return text
-        .split(wordDelimiter).length;
+        .split(wordDelimiterRegex)
+        .filter(word => !!word);
 }
 
-function getNumSentences(text, sentenceDelimiter = '.') {
+function getSentences(text) {
     return text
-        .split(sentenceDelimiter).length;
+        .split(sentenceDelimiterRegex)
+        .filter(sentence => !!sentence);
 }
 
-function getNumSyllablesFromText(text, wordDelimiter = ' ') {
-    const words = text.split(wordDelimiter);
+function getNumWords(text) {
+    return getWords(text).length;
+}
+
+function getNumSentences(text) {
+    return getSentences(text).length;
+}
+
+function getNumSyllablesFromText(text) {
+    const words = getWords(text);
     return words.reduce((numSyllables, word) => {
         return numSyllables + getNumSyllables(word);
     }, 0);

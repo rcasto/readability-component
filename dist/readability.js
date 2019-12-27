@@ -18,7 +18,9 @@
 
   const vowels = new Set(['a', 'e', 'i', 'o', 'u']);
   const diphthongs = new Set(['ee', 'ea', 'oo', 'ou', 'ow', 'ie', 'ay', 'oi']);
-  const triphthongs = new Set(['eau', 'iou', 'our', 'ire', 'ier']); // words per minute
+  const triphthongs = new Set(['eau', 'iou', 'our', 'ire', 'ier']);
+  const wordDelimiterRegex = /\s+/;
+  const sentenceDelimiterRegex = /[\.\?!\n]\n?/; // words per minute
 
   const averageReadingSpeed = 180;
   function getAverageTimeToRead(text) {
@@ -52,21 +54,29 @@
       return 'Fairly difficult to read';
     } else if (readability < 50 && readability >= 30) {
       return 'Difficult to read';
-    } else {
-      return 'Very difficult to read';
     }
+
+    return 'Very difficult to read';
   }
 
-  function getNumWords(text, wordDelimiter = ' ') {
-    return text.split(wordDelimiter).length;
+  function getWords(text) {
+    return text.split(wordDelimiterRegex).filter(word => !!word);
   }
 
-  function getNumSentences(text, sentenceDelimiter = '.') {
-    return text.split(sentenceDelimiter).length;
+  function getSentences(text) {
+    return text.split(sentenceDelimiterRegex).filter(sentence => !!sentence);
   }
 
-  function getNumSyllablesFromText(text, wordDelimiter = ' ') {
-    const words = text.split(wordDelimiter);
+  function getNumWords(text) {
+    return getWords(text).length;
+  }
+
+  function getNumSentences(text) {
+    return getSentences(text).length;
+  }
+
+  function getNumSyllablesFromText(text) {
+    const words = getWords(text);
     return words.reduce((numSyllables, word) => {
       return numSyllables + getNumSyllables(word);
     }, 0);
