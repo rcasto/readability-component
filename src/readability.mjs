@@ -5,6 +5,7 @@ const templateContent = `
     .readability-container {
       display: flex;
       flex-direction: column;
+      text-align: right;
       margin: var(--readability-margin, 0);
     }
     .readability-container * {
