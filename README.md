@@ -10,12 +10,12 @@ To determine the average time to read the content, an average reading speed of 1
 ## Integration
 In order to integrate this web component into your web application you can use one of the below methods.
 
-### Method 1 - Non-module script tag
 ```html
 <script defer src="https://cdn.jsdelivr.net/gh/rcasto/readability-component/dist/readability.min.js"></script>
 ```
 
-### Method 2 - Module script tag
+**Or**
+
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/gh/rcasto/readability-component/src/readability.mjs"></script>
 ```
@@ -30,33 +30,7 @@ In order to integrate this web component into your web application you can use o
 </read-ability>
 ```
 
-## Browser Support
-- [Web Components](https://caniuse.com/#search=web%20components)  
-    <a href="http://caniuse.com/#feat=custom-elementsv1">
-		<picture>
-			<source type="image/webp" srcset="https://caniuse.bitsofco.de/image/custom-elementsv1.webp">
-			<img src="https://caniuse.bitsofco.de/image/custom-elementsv1.png" alt="Data on support for the custom-elementsv1 feature across the major browsers from caniuse.com">
-		</picture>
-	</a>
-    <a href="http://caniuse.com/#feat=template">
-		<picture>
-			<source type="image/webp" srcset="https://caniuse.bitsofco.de/image/template.webp">
-			<img src="https://caniuse.bitsofco.de/image/template.png" alt="Data on support for the template feature across the major browsers from caniuse.com">
-		</picture>
-	</a>
-    <a href="http://caniuse.com/#feat=shadowdomv1">
-		<picture>
-			<source type="image/webp" srcset="https://caniuse.bitsofco.de/image/shadowdomv1.webp">
-			<img src="https://caniuse.bitsofco.de/image/shadowdomv1.png" alt="Data on support for the shadowdomv1 feature across the major browsers from caniuse.com">
-		</picture>
-	</a>
-- [JavaScript modules via script tag](https://caniuse.com/#feat=es6-module)  
-    <a href="http://caniuse.com/#feat=es6-module">
-        <picture>
-            <source type="image/webp" srcset="https://caniuse.bitsofco.de/image/es6-module.webp">
-            <img src="https://caniuse.bitsofco.de/image/es6-module.png" alt="Data on support for the es6-module feature across the major browsers from caniuse.com">
-        </picture>
-    </a>
+![Readability Web Component Screenshot](./readability-screenshot.png)
 
 ## Resources
 - https://www.howmanysyllables.com/howtocountsyllables
