@@ -23,8 +23,6 @@ const template = document.createElement('template');
 template.innerHTML = templateContent;
 
 class Readability extends HTMLElement {
-  observer;
-
   constructor() {
     super();
 
