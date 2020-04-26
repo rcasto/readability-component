@@ -7,6 +7,7 @@ const templateContent = `
       flex-direction: column;
       text-align: right;
       margin: var(--readability-margin, 0);
+      font-size: var(--readability-font-size, 12px);
     }
     .readability-container * {
       margin-left: auto;
