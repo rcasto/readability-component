@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server ./",
-    "build": "rollup --config"
+    "build": "npm run build:dev && npm run build:prod",
+    "build:dev": "rollup --config rollup/rollup.config.dev.js",
+    "build:prod": "rollup --config rollup/rollup.config.prod.js"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
   "license": "MIT",
