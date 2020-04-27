@@ -108,7 +108,9 @@
       flex-direction: column;
       text-align: right;
       margin: var(--readability-margin, 0);
-      font-size: var(--readability-font-size, 12px);
+      font-size: var(--readability-font-size, 0.8em);
+      font-weight: var(--readability-font-weight, lighter);
+      opacity: var(--readability-opacity, 0.8);
     }
     .readability-container * {
       margin-left: auto;
