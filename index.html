@@ -18,11 +18,8 @@
     }
   </style>
 
-  <!-- Method 1 -->
-  <!-- <script defer src="dist/readability.js"></script> -->
-
-  <!-- Method 2 -->
-  <script type="module" src="src/readability.mjs"></script>
+  <!-- Include script on your page -->
+  <script defer src="dist/readability.js"></script>
 </head>
 
 <body>
@@ -41,12 +38,23 @@
   <!-- The Australian platypus is seemingly a hybrid of a mammal and reptilian creature. -->
 
   <script>
-    const textInput = document.getElementById('text-input');
-    const textContent = document.getElementById('text-content');
-    textInput.oninput = () => {
+    window.addEventListener('load', () => {
+      // Add to custom element registry
+      // This allows you to define the html tag yourself
+      // in this case: <read-ability></read-ability>
+      //
+      // By default the Readability component is exported
+      // as "Readability" on the global window object
+      customElements.define('read-ability', Readability);
+
+      const textInput = document.getElementById('text-input');
+      const textContent = document.getElementById('text-content');
+
+      textInput.addEventListener('input', () => {
+        textContent.textContent = textInput.value;
+      });
       textContent.textContent = textInput.value;
-    };
-    textContent.textContent = textInput.value;
+    });
   </script>
 </body>
 
