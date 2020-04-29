@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Readability Web Component</title>
+  <title>Readability Web Component - Test Client</title>
 
   <style>
     textarea {
@@ -13,12 +13,19 @@
       margin: 0 auto 12px auto;
       display: block;
     }
+
     read-ability {
+      /* Allow customization of some of the Web components styling via
+      CSS properties */
       --readability-margin: 0 0 16px 0;
+      --readability-font-size: 0.8em;     /*default*/
+      --readability-font-weight: lighter; /*default*/
+      --readability-opacity: 0.8;         /*default*/
     }
   </style>
 
   <!-- Include script on your page -->
+  <!-- You'd probably want the minified version in production -->
   <script defer src="dist/readability.js"></script>
 </head>
 
@@ -27,15 +34,6 @@
   <read-ability>
     <div id="text-content" slot="readable-text"></div>
   </read-ability>
-
-  <!-- Readability should be around 116 -->
-  <!-- The cat sat on the mat. -->
-
-  <!-- Readability should be around 69 -->
-  <!-- This sentence, taken as a reading passage unto itself, is being used to prove a point. -->
-
-  <!-- Readability should be around 37.5 -->
-  <!-- The Australian platypus is seemingly a hybrid of a mammal and reptilian creature. -->
 
   <script>
     window.addEventListener('load', () => {
