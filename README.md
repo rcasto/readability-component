@@ -7,6 +7,8 @@ To determine the average time to read the content, an average reading speed of 1
 
 **Note:** A heuristic is utilized to determine the number of syllables in a word, so the readability level may not be exactly what it would be if you were to manually calculate it, but it should not be terribly far off.
 
+[Try it out!](https://rcasto.github.io/readability-component/)
+
 ## Usage
 ```html
 <!DOCTYPE html>
