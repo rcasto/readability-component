@@ -5,6 +5,7 @@ const config = {
     ...commonConfig,
     output: [
 		{
+			name: 'Readability',
 			file: 'dist/readability.min.js',
 			format: 'iife'
 		}

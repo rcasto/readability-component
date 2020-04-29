@@ -1,7 +1,7 @@
 import babel from 'rollup-plugin-babel';
 
 const config = {
-	input: 'src/readability.mjs',
+	input: 'src/readability.js',
 	plugins: [babel()],
 };
 
