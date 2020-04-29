@@ -36,8 +36,8 @@ To determine the average time to read the content, an average reading speed of 1
   </style>
 
   <!-- Include script on your page -->
-  <!-- You'd probably want the minified version in production -->
-  <script defer src="dist/readability.js"></script>
+  <!-- You'd probably want to use a specific version in production -->
+  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@latest/dist/readability.min.js"></script>
 </head>
 
 <body>
