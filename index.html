@@ -32,6 +32,9 @@
 <body>
   <textarea id="text-input">The cat sat on the mat.</textarea>
   <read-ability>
+    <!-- This can be anything, this is your content -->
+    <!-- Make sure to add slot="readable-text" attribute to your content if you also want it to be rendered -->
+    <!-- If you neglect to add the slot, then the readability of any text contained by the component is computed, without displaying it -->
     <div id="text-content" slot="readable-text"></div>
   </read-ability>
 
