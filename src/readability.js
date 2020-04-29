@@ -1,4 +1,4 @@
-import { getReadability, getAverageTimeToRead } from './textHelpers.mjs';
+import { getReadability, getAverageTimeToRead } from './textHelpers.js';
 
 const templateContent = `
   <style>
@@ -25,7 +25,7 @@ const templateContent = `
 const template = document.createElement('template');
 template.innerHTML = templateContent;
 
-class Readability extends HTMLElement {
+export default class Readability extends HTMLElement {
   constructor() {
     super();
 
@@ -53,5 +53,3 @@ class Readability extends HTMLElement {
     readabilityAverageReadingTimeDiv.textContent = getAverageTimeToRead(text);
   }
 }
-
-customElements.define('read-ability', Readability);
