@@ -12,6 +12,17 @@
     "prepublish": "npm run build"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
+  "homepage": "https://github.com/rcasto/readability-component#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcasto/readability-component.git"
+  },
+  "keywords": [
+    "web component",
+    "readability",
+    "flesch–kincaid",
+    "time to read"
+  ],
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
