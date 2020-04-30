@@ -7,7 +7,7 @@ To determine the average time to read the content, an average reading speed of 1
 
 **Note:** A heuristic is utilized to determine the number of syllables in a word, so the readability level may not be exactly what it would be if you were to manually calculate it, but it should not be terribly far off.
 
-[Try it out!](https://rcasto.github.io/readability-component/)
+[Try it out! (codepen)](https://codepen.io/rcasto/pen/gOaxjKM)
 
 ## Usage
 ```html
@@ -16,6 +16,8 @@ To determine the average time to read the content, an average reading speed of 1
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Readability Web Component - Test Client</title>
 
   <style>
@@ -31,19 +33,20 @@ To determine the average time to read the content, an average reading speed of 1
       /* Allow customization of some of the Web components styling via
       CSS properties */
       --readability-margin: 0 0 16px 0;
-      --readability-font-size: 0.8em;     /*default*/
-      --readability-font-weight: lighter; /*default*/
-      --readability-opacity: 0.8;         /*default*/
+      --readability-font-size: 0.8em;
+      --readability-font-weight: lighter;
+      --readability-opacity: 0.8;
+      --readability-item-margin: 0 auto;
     }
   </style>
 
   <!-- Include script on your page -->
-  <!-- You'd probably want to use a specific version in production -->
-  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@latest/dist/readability.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.1/dist/readability.min.js"></script>
 </head>
 
 <body>
   <textarea id="text-input">The cat sat on the mat.</textarea>
+
   <read-ability>
     <!-- This can be anything, this is your content -->
     <!-- Make sure to add slot="readable-text" attribute to your content if you also want it to be rendered -->
