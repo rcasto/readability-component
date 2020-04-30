@@ -41,7 +41,7 @@ To determine the average time to read the content, an average reading speed of 1
   </style>
 
   <!-- Include script on your page -->
-  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.1/dist/readability.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.3/dist/readability.min.js"></script>
 </head>
 
 <body>
