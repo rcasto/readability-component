@@ -10,6 +10,17 @@ To determine the average time to read the content, an average reading speed of 1
 [Try it out! (codepen)](https://codepen.io/rcasto/pen/gOaxjKM)
 
 ## Usage
+
+### Via module bundler
+```javascript
+import Readability from 'readability-component';
+
+window.addEventListener('load', () => {
+    customElements.define('read-ability', Readability);
+});
+```
+
+### Via script tag
 ```html
 <!DOCTYPE html>
 <html>
@@ -18,17 +29,9 @@ To determine the average time to read the content, an average reading speed of 1
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Readability Web Component - Test Client</title>
+  <title>Readability Web Component</title>
 
   <style>
-    textarea {
-      max-width: 540px;
-      width: 100%;
-      height: 120px;
-      margin: 0 auto 12px auto;
-      display: block;
-    }
-
     read-ability {
       /* Allow customization of some of the Web components styling via
       CSS properties */
@@ -41,12 +44,10 @@ To determine the average time to read the content, an average reading speed of 1
   </style>
 
   <!-- Include script on your page -->
-  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.3/dist/readability.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.4/dist/readability.min.js"></script>
 </head>
 
 <body>
-  <textarea id="text-input">The cat sat on the mat.</textarea>
-
   <read-ability>
     <!-- This can be anything, this is your content -->
     <!-- Make sure to add slot="readable-text" attribute to your content if you also want it to be rendered -->
@@ -63,15 +64,6 @@ To determine the average time to read the content, an average reading speed of 1
       // By default the Readability component is exported
       // as "Readability" on the global window object
       customElements.define('read-ability', Readability);
-
-      const textInput = document.getElementById('text-input');
-      const textContent = document.getElementById('text-content');
-
-      textInput.addEventListener('input', () => {
-        textContent.textContent = textInput.value;
-      });
-      textContent.textContent = textInput.value;
-    });
   </script>
 </body>
 
