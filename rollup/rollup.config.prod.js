@@ -8,6 +8,10 @@ const config = {
 			name: 'Readability',
 			file: 'dist/readability.min.js',
 			format: 'iife'
+		},
+		{
+			file: 'dist/readability.es.min.js',
+			format: 'es'
 		}
 	]
 };
