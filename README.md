@@ -42,9 +42,6 @@ window.addEventListener('load', () => {
       --readability-item-margin: 0 auto;
     }
   </style>
-
-  <!-- Include script on your page -->
-  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.4/dist/readability.min.js"></script>
 </head>
 
 <body>
@@ -55,6 +52,8 @@ window.addEventListener('load', () => {
     <div id="text-content" slot="readable-text"></div>
   </read-ability>
 
+  <!-- Include script on your page -->
+  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.4/dist/readability.min.js"></script>
   <script>
     window.addEventListener('load', () => {
       // Add to custom element registry
@@ -64,6 +63,7 @@ window.addEventListener('load', () => {
       // By default the Readability component is exported
       // as "Readability" on the global window object
       customElements.define('read-ability', Readability);
+    });
   </script>
 </body>
 
