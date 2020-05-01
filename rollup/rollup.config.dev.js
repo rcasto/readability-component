@@ -11,6 +11,10 @@ const config = {
 		{
 			file: 'dist/readability.es.js',
 			format: 'es'
+		},
+		{
+			file: 'dist/readability.cjs.js',
+			format: 'cjs'
 		}
 	]
 };

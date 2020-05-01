@@ -2,7 +2,8 @@
   "name": "readability-component",
   "version": "1.0.3",
   "description": "This is a fairly simple web component that can be used to wrap around your content and determine its readability level, as well as the average time it would take to read.",
-  "main": "dist/readability.es.min.js",
+  "main": "dist/readability.cjs.min.js",
+  "module": "dist/readability.es.min.js",
   "scripts": {
     "start": "npm run start:server && npm run start:dev",
     "start:server": "http-server ./ &",
