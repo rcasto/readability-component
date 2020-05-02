@@ -27,6 +27,12 @@ const template = document.createElement('template');
 template.innerHTML = templateContent;
 
 export default class Readability extends HTMLElement {
+  static get observedAttributes() {
+    return [
+      'data-text'
+    ];
+  }
+
   constructor() {
     super();
 
@@ -58,13 +64,21 @@ export default class Readability extends HTMLElement {
       childList: true,
     });
   }
+  attributeChangedCallback() {
+    this.setReadability();
+  }
   disconnectedCallback() {
     this.readabilityLevelDiv = null;
     this.readabilityAverageReadingTimeDiv = null;
     this.observer.disconnect();
   }
+  getText() {
+    const elemText = (this.textContent || '').trim();
+    const attrText = (this.getAttribute('data-text') || '').trim();
+    return elemText || attrText;
+  }
   setReadability() {
-    const text = this.textContent;
+    const text = this.getText();
     this.readabilityLevelDiv.textContent = getReadability(text);
     this.readabilityAverageReadingTimeDiv.textContent = getAverageTimeToRead(text);
   }
