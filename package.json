@@ -11,6 +11,7 @@
     "build": "npm run build:dev && npm run build:prod",
     "build:dev": "rollup --config rollup/rollup.config.dev.js",
     "build:prod": "rollup --config rollup/rollup.config.prod.js",
+    "test": "jest",
     "prepublish": "npm run build"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
@@ -33,6 +34,7 @@
     "@babel/core": "7.9.6",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "http-server": "0.12.3",
+    "jest": "25.5.4",
     "rollup": "2.7.6",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-terser": "5.3.0"
