@@ -39,7 +39,8 @@ window.addEventListener('load', () => {
       --readability-font-size: 0.8em;
       --readability-font-weight: lighter;
       --readability-opacity: 0.8;
-      --readability-item-margin: 0 auto;
+      --readability-spacer-margin: 0 6px;
+      --readability-justify-content: center;
     }
   </style>
 </head>
@@ -53,7 +54,7 @@ window.addEventListener('load', () => {
   </read-ability>
 
   <!-- Include script on your page -->
-  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.4/dist/readability.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.5/dist/readability.min.js"></script>
   <script>
     window.addEventListener('load', () => {
       // Add to custom element registry
