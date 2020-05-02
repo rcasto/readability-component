@@ -1,4 +1,4 @@
-import { getReadability, getAverageTimeToRead, normalizeText } from './textHelpers.js';
+import { getReadabilityInfo } from './textHelpers.js';
 
 const templateContent = `
   <style>
@@ -78,8 +78,8 @@ export default class Readability extends HTMLElement {
     return elemText || attrText;
   }
   setReadability() {
-    const text = normalizeText(this.getText());
-    this.readabilityLevelDiv.textContent = getReadability(text);
-    this.readabilityAverageReadingTimeDiv.textContent = getAverageTimeToRead(text);
+    const { readabilityRating, averageTimeToRead } = getReadabilityInfo(this.getText());
+    this.readabilityLevelDiv.textContent = readabilityRating;
+    this.readabilityAverageReadingTimeDiv.textContent = averageTimeToRead;
   }
 }

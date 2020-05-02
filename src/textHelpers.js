@@ -22,11 +22,12 @@ const triphthongs = new Set([
     'ire',
     'ier'
 ]);
-const newLineRegex = /\n/g;
-const whitespaceRegex = /\s+/g;
-const sentenceDelimiterRegex = /[^\.\?!][\.\?!]/;
+const dotRegex = /\.+/g;
+const whitespaceRegex = /[ \t]+/g;
 // https://www.thepunctuationguide.com/
-const nonTerminalPunctuationRegex = /[,;:-_\"\'\[\]\(\)\{\}<>\/]/g;
+const terminalPunctuationRegex = /[\.\?!\n]/g;
+const nonTerminalPunctuationWhitespaceReplaceRegex = /\/|\.{3}/g;
+const nonTerminalPunctuationEmptyReplaceRegex = /[\"\',;\:\-_\[\]\(\)\{\}<>]/g;
 
 // https://en.wikipedia.org/wiki/Words_per_minute#Reading_and_comprehension
 const averageWordsPerMinute = 180;
@@ -34,12 +35,32 @@ const readabilityConstantFactor = 206.835;
 const readabilityAverageWordsPerSentenceFactor = 1.015;
 const readabilityAverageSyllablesPerWordFactor = 84.6;
 
-export function getAverageTimeToRead(text) {
+export function getReadabilityInfo(text) {
+    const normalizedText = normalizeText(text);
+    return {
+        readabilityRating: getReadability(normalizedText),
+        averageTimeToRead: getAverageTimeToRead(normalizedText)
+    };
+}
+
+export function normalizeText(text) {
+    return (text || '')
+        .toLowerCase()
+        .trim()
+        .replace(nonTerminalPunctuationWhitespaceReplaceRegex, ' ')
+        .replace(nonTerminalPunctuationEmptyReplaceRegex, '')
+        .replace(terminalPunctuationRegex, '.')
+        .replace(dotRegex, '.')
+        .replace(whitespaceRegex, ' ')
+        .trim();
+}
+
+function getAverageTimeToRead(text) {
     const averageTime = Math.ceil(getNumWords(text) / averageWordsPerMinute);
     return `${averageTime} min.`;
 }
 
-export function getReadability(text) {
+function getReadability(text) {
     const numWords = getNumWords(text);
     const numSentences = getNumSentences(text);
     const numSyllables = getNumSyllablesFromText(text);
@@ -50,15 +71,6 @@ export function getReadability(text) {
         readabilityAverageSyllablesPerWordFactor * (numSyllables / numWords)
     );
     return getReadabilityMapping(readability);
-}
-
-export function normalizeText(text) {
-    return (text || '')
-        .toLowerCase()
-        .replace(nonTerminalPunctuationRegex, ' ')
-        .trim()
-        .replace(newLineRegex, '.')
-        .replace(whitespaceRegex, ' ');
 }
 
 // https://web.archive.org/web/20160712094308/http://www.mang.canterbury.ac.nz/writing_guide/writing/flesch.shtml
@@ -82,13 +94,13 @@ function getReadabilityMapping(readability) {
 function getWords(text) {
     return (text || '')
         .split(whitespaceRegex)
-        .filter(word => !!word);
+        .filter(word => (word || '').trim());
 }
 
 function getSentences(text) {
     return (text || '')
-        .split(sentenceDelimiterRegex)
-        .filter(sentence => !!sentence);
+        .split('.')
+        .filter(sentence => (sentence || '').trim());
 }
 
 function getNumWords(text) {
