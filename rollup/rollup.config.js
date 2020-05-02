@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup-plugin-babel';
 
 const config = {
 	input: 'src/readability.js',
