@@ -30,27 +30,42 @@ export default class Readability extends HTMLElement {
   constructor() {
     super();
 
-    this.observer = new MutationObserver(() => this.setReadability(this.textContent));
+    this.readabilityLevelDiv = null;
+    this.readabilityAverageReadingTimeDiv = null;
+
+    this.observer = new MutationObserver(() => this.setReadability());
   }
   connectedCallback() {
+    // https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks
+    if (!this.isConnected) {
+      return;
+    }
+
     const shadowRoot = this.attachShadow({
       mode: 'open'
     });
     const templateClone = template.content.cloneNode(true);
 
     shadowRoot.appendChild(templateClone);
-    this.setReadability(this.textContent);
+
+    this.readabilityLevelDiv = shadowRoot.querySelector('.readability-level');
+    this.readabilityAverageReadingTimeDiv = shadowRoot.querySelector('.readability-time');
+
+    this.setReadability();
 
     this.observer.observe(this, {
       subtree: true,
       childList: true,
     });
   }
-  setReadability(text) {
-    const readabilityLevelDiv = this.shadowRoot.querySelector('.readability-level');
-    const readabilityAverageReadingTimeDiv = this.shadowRoot.querySelector('.readability-time');
-
-    readabilityLevelDiv.textContent = getReadability(text);
-    readabilityAverageReadingTimeDiv.textContent = getAverageTimeToRead(text);
+  disconnectedCallback() {
+    this.readabilityLevelDiv = null;
+    this.readabilityAverageReadingTimeDiv = null;
+    this.observer.disconnect();
+  }
+  setReadability() {
+    const text = this.textContent;
+    this.readabilityLevelDiv.textContent = getReadability(text);
+    this.readabilityAverageReadingTimeDiv.textContent = getAverageTimeToRead(text);
   }
 }
