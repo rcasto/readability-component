@@ -30,10 +30,7 @@ const averageReadingSpeed = 180;
 
 export function getAverageTimeToRead(text) {
     const averageTime = Math.ceil((text || '').length / averageReadingSpeed);
-    if (averageTime === 1) {
-        return `About 1 minute to read`;
-    }
-    return `About ${averageTime} minutes to read`;
+    return `${averageTime} min.`;
 }
 
 export function getReadability(text) {
@@ -47,6 +44,7 @@ export function getReadability(text) {
     return getReadabilityMapping(readability);
 }
 
+// https://web.archive.org/web/20160712094308/http://www.mang.canterbury.ac.nz/writing_guide/writing/flesch.shtml
 function getReadabilityMapping(readability) {
     if (readability >= 90) {
         return 'Very easy to read';

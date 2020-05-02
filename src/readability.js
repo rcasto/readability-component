@@ -4,18 +4,20 @@ const templateContent = `
   <style>
     .readability-container {
       display: flex;
-      flex-direction: column;
       margin: var(--readability-margin, 0);
       font-size: var(--readability-font-size, 0.8em);
       font-weight: var(--readability-font-weight, lighter);
       opacity: var(--readability-opacity, 0.8);
+      justify-content: var(--readability-justify-content, end);
     }
-    .readability-container * {
-      margin: var(--readability-item-margin, 0 0 0 auto);
+    .readability-container .readability-spacer {
+      margin: var(--readability-spacer-margin, 0 6px);
+      border: 1px solid;
     }
   </style>
   <div class="readability-container">
     <div class="readability-level"></div>
+    <div class="readability-spacer"></div>
     <div class="readability-time"></div>
   </div>
   <slot name="readable-text"></slot>

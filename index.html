@@ -8,6 +8,10 @@
   <title>Readability Web Component - Test Client</title>
 
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+  
     textarea {
       max-width: 540px;
       width: 100%;
@@ -23,7 +27,8 @@
       --readability-font-size: 0.8em;
       --readability-font-weight: lighter;
       --readability-opacity: 0.8;
-      --readability-item-margin: 0 auto;
+      --readability-spacer-margin: 0 6px;
+      --readability-justify-content: center;
     }
   </style>
 
