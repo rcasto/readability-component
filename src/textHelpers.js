@@ -23,13 +23,16 @@ const triphthongs = new Set([
     'ier'
 ]);
 const wordDelimiterRegex = /\s+/;
-const sentenceDelimiterRegex = /[\.\?!\n]\n?/;
+const sentenceDelimiterRegex = /[^\.\?!][\.\?!]\n*/;
 
-// words per minute
-const averageReadingSpeed = 180;
+// https://en.wikipedia.org/wiki/Words_per_minute#Reading_and_comprehension
+const averageWordsPerMinute = 180;
+const readabilityConstantFactor = 206.835;
+const readabilityAverageWordsPerSentenceFactor = 1.015;
+const readabilityAverageSyllablesPerWordFactor = 84.6;
 
 export function getAverageTimeToRead(text) {
-    const averageTime = Math.ceil((text || '').length / averageReadingSpeed);
+    const averageTime = Math.ceil(getNumWords(text) / averageWordsPerMinute);
     return `${averageTime} min.`;
 }
 
@@ -40,7 +43,11 @@ export function getReadability(text) {
     const numSentences = getNumSentences(text);
     const numSyllables = getNumSyllablesFromText(text);
 
-    const readability = 206.835 - 1.015 * (numWords / numSentences) - 84.6 * (numSyllables / numWords);
+    const readability = (
+        readabilityConstantFactor -
+        readabilityAverageWordsPerSentenceFactor * (numWords / numSentences) -
+        readabilityAverageSyllablesPerWordFactor * (numSyllables / numWords)
+    );
     return getReadabilityMapping(readability);
 }
 
@@ -63,13 +70,13 @@ function getReadabilityMapping(readability) {
 }
 
 function getWords(text) {
-    return text
+    return (text || '')
         .split(wordDelimiterRegex)
         .filter(word => !!word);
 }
 
 function getSentences(text) {
-    return text
+    return (text || '')
         .split(sentenceDelimiterRegex)
         .filter(sentence => !!sentence);
 }
