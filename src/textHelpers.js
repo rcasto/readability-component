@@ -22,8 +22,11 @@ const triphthongs = new Set([
     'ire',
     'ier'
 ]);
-const wordDelimiterRegex = /\s+/;
-const sentenceDelimiterRegex = /[^\.\?!][\.\?!]\n*/;
+const newLineRegex = /\n/g;
+const whitespaceRegex = /\s+/g;
+const sentenceDelimiterRegex = /[^\.\?!][\.\?!]/;
+// https://www.thepunctuationguide.com/
+const nonTerminalPunctuationRegex = /[,;:-_\"\'\[\]\(\)\{\}<>\/]/g;
 
 // https://en.wikipedia.org/wiki/Words_per_minute#Reading_and_comprehension
 const averageWordsPerMinute = 180;
@@ -37,8 +40,6 @@ export function getAverageTimeToRead(text) {
 }
 
 export function getReadability(text) {
-    text = normalizeText(text);
-
     const numWords = getNumWords(text);
     const numSentences = getNumSentences(text);
     const numSyllables = getNumSyllablesFromText(text);
@@ -49,6 +50,15 @@ export function getReadability(text) {
         readabilityAverageSyllablesPerWordFactor * (numSyllables / numWords)
     );
     return getReadabilityMapping(readability);
+}
+
+export function normalizeText(text) {
+    return (text || '')
+        .toLowerCase()
+        .replace(nonTerminalPunctuationRegex, ' ')
+        .trim()
+        .replace(newLineRegex, '.')
+        .replace(whitespaceRegex, ' ');
 }
 
 // https://web.archive.org/web/20160712094308/http://www.mang.canterbury.ac.nz/writing_guide/writing/flesch.shtml
@@ -71,7 +81,7 @@ function getReadabilityMapping(readability) {
 
 function getWords(text) {
     return (text || '')
-        .split(wordDelimiterRegex)
+        .split(whitespaceRegex)
         .filter(word => !!word);
 }
 
@@ -120,10 +130,4 @@ function getNumSyllables(word) {
     }
 
     return numSyllables;
-}
-
-function normalizeText(text) {
-    return (text || '')
-        .trim()
-        .toLowerCase();
 }
