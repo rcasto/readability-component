@@ -173,6 +173,26 @@ describe('getReadabilityInfo Tests', () => {
         verifyCalculatedReadability(text, expectedReadability);
     });
 
+    test('can handle silent e (not all cases, but some)', () => {
+        const text = 'take we rule be';
+        const expectedReadability = {
+            numSyllables: 4,
+            numSentences: 1,
+            numWords: 4
+        };
+        verifyCalculatedReadability(text, expectedReadability);
+    });
+
+    test('can handle ed when not syllable (not all cases, but some)', () => {
+        const text = 'owned bed wed phoned';
+        const expectedReadability = {
+            numSyllables: 4,
+            numSentences: 1,
+            numWords: 4
+        };
+        verifyCalculatedReadability(text, expectedReadability);
+    });
+
     function verifyDefaultEmptyReadabilityInfo(info) {
         expect(info).toBeDefined();
         expect(info.readabilityRating).toEqual('Nothing to read');
@@ -189,16 +209,25 @@ describe('getReadabilityInfo Tests', () => {
         const calculatedRating = calculatedReadability.readabilityRatingRaw;
         const expectedRating = expectedReadability.readabilityRatingRaw;
 
+        const calculatedNumSyllables = calculatedReadability.numSyllables;
+        const expectedNumSyllables = expectedReadability.numSyllables;
+
         const calculatedNumWords = calculatedReadability.numWords;
         const expectedNumWords = expectedReadability.numWords;
 
         const calculatedNumSentences = calculatedReadability.numSentences;
         const expectedNumSentences = expectedReadability.numSentences;
 
+        if (expectedNumSyllables) {
+            expect(calculatedNumSyllables).toEqual(expectedNumSyllables);
+        }
+
         expect(calculatedNumWords).toEqual(expectedNumWords);
         expect(calculatedNumSentences).toEqual(expectedNumSentences);
 
-        // expect(isCalculatedReadabilityWithinAccuracy(calculatedRating, expectedRating)).toBeTruthy();
+        if (expectedRating) {
+            // expect(isCalculatedReadabilityWithinAccuracy(calculatedRating, expectedRating)).toBeTruthy();
+        }
     }
 
     function isCalculatedReadabilityWithinAccuracy(rating, expectedRating) {

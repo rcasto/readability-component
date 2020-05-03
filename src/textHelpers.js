@@ -1,17 +1,12 @@
-const vowels = new Set([
-    'a',
-    'e',
-    'i',
-    'o',
-    'u',
-    'y'
-]);
-const vowelRegex = /[aeiouy]+/g;
+// Normalization Regular Expressions
 const whitespaceRegex = /\s+/g;
 const apostropheRegex = /\'/g;
 const ellipsisRegex = /\.{2,4}/g;
 const nonLetterOrTerminalRegex = /[^a-z\.]/g;
 const terminalPunctuationRegex = /[\.\?!\n\r]+/g; // https://www.thepunctuationguide.com/
+
+// Syllable Count Regular Expressions
+const vowelRegex = /[aeiouy]+/g;
 
 // https://en.wikipedia.org/wiki/Words_per_minute#Reading_and_comprehension
 const averageWordsPerMinute = 180;
@@ -115,13 +110,40 @@ function getNumSyllablesFromText(text) {
 }
 
 function getNumSyllables(word) {
-    const wordLength = (word || '').length;
+    word = word || '';
+
+    const wordLength = word.length;
     let numSyllables = 0;
 
-    for (let i = 0; i < wordLength; i++) {
-        if (vowels.has(word[i])) {
+    // substitute 'a' as the universal vowel
+    // replacing consecutive vowels with a single occurrence
+    const vowelReplacedWord =
+        word.replace(vowelRegex, 'a');
+    const vowelReplacedWordLength = vowelReplacedWord.length;
+
+    for (let i = 0; i < vowelReplacedWordLength; i++) {
+        if (vowelReplacedWord[i] === 'a') {
             numSyllables++;
         }
+    }
+
+    // At this point, numSyllables essentially
+    // is equivalent to the number of consolidated vowels
+
+    // remove silent 'e' heuristic
+    if (
+        numSyllables >= 2 &&
+        word[wordLength - 1] === 'e'
+    ) {
+        return getNumSyllables(word.slice(0, wordLength - 1));
+    }
+    // remove silent 'ed' heuristic
+    else if (
+        numSyllables >= 2 &&
+        word[wordLength - 2] === 'e' &&
+        word[wordLength - 1] === 'd'
+    ) {
+        return getNumSyllables(word.slice(0, wordLength - 2));
     }
 
     return numSyllables;
