@@ -22,11 +22,12 @@ const triphthongs = new Set([
     'ire',
     'ier'
 ]);
+const digitRegex = /\d+/g;
 const dotRegex = /\.+/g;
 const whitespaceRegex = /[ \t]+/g;
 // https://www.thepunctuationguide.com/
 const terminalPunctuationRegex = /[\.\?!\n]/g;
-const nonTerminalPunctuationWhitespaceReplaceRegex = /\/|\.{3}/g;
+const nonTerminalPunctuationWhitespaceReplaceRegex = /\/|\.{2,4}/g;
 const nonTerminalPunctuationEmptyReplaceRegex = /[\"\',;\:\-_\[\]\(\)\{\}<>]/g;
 
 // https://en.wikipedia.org/wiki/Words_per_minute#Reading_and_comprehension
@@ -38,7 +39,7 @@ const readabilityAverageSyllablesPerWordFactor = 84.6;
 export function getReadabilityInfo(text) {
     const normalizedText = normalizeText(text);
     return {
-        readabilityRating: getReadability(normalizedText),
+        ...getReadability(normalizedText),
         averageTimeToRead: getAverageTimeToRead(normalizedText)
     };
 }
@@ -47,6 +48,7 @@ export function normalizeText(text) {
     return (text || '')
         .toLowerCase()
         .trim()
+        .replace(digitRegex, '')
         .replace(nonTerminalPunctuationWhitespaceReplaceRegex, ' ')
         .replace(nonTerminalPunctuationEmptyReplaceRegex, '')
         .replace(terminalPunctuationRegex, '.')
@@ -70,11 +72,18 @@ function getReadability(text) {
         readabilityAverageWordsPerSentenceFactor * (numWords / numSentences) -
         readabilityAverageSyllablesPerWordFactor * (numSyllables / numWords)
     );
-    return getReadabilityMapping(readability);
+    return {
+        readabilityRating: getReadabilityMapping(readability),
+        readabilityRatingRaw: readability
+    };
 }
 
 // https://web.archive.org/web/20160712094308/http://www.mang.canterbury.ac.nz/writing_guide/writing/flesch.shtml
 function getReadabilityMapping(readability) {
+    if (isNaN(readability)) {
+        return 'Nothing to read';
+    }
+
     if (readability >= 90) {
         return 'Very easy to read';
     } else if (readability < 90 && readability >= 80) {

@@ -1,5 +1,6 @@
 import {
-    normalizeText
+    normalizeText,
+    getReadabilityInfo
 } from '../src/textHelpers';
 
 describe('normalizeText Tests', () => {
@@ -58,9 +59,9 @@ describe('normalizeText Tests', () => {
     });
 
     test('can handle terminal punctuation', () => {
-        const text = `Sentence 1
-         Sentence 2! Sentence 3? Sentence 4.`;
-        const expectedText = 'sentence 1. sentence 2. sentence 3. sentence 4.';
+        const text = `Sentence
+         Sentence! Sentence? Sentence.`;
+        const expectedText = 'sentence. sentence. sentence. sentence.';
         const normalizedText = normalizeText(text);
         expect(normalizedText).toEqual(expectedText);
     });
@@ -77,4 +78,93 @@ describe('normalizeText Tests', () => {
         const normalizedText = normalizeText(text);
         expect(normalizedText).toEqual(expectedText);
     });
+
+    test('can replace numbers/digits with nothing/empty', () => {
+        const text = 'Number 1 and Number 2 and then Number 1000';
+        const expectedText = 'number and number and then number';
+        const normalizedText = normalizeText(text);
+        expect(normalizedText).toEqual(expectedText);
+    });
+});
+
+describe('getReadabilityInfo Tests', () => {
+    const accuracyBufferInPercentage = 5 / 100; // 5% plus or minus
+
+    test('can handle invalid text', () => {
+        let readabilityInfo = getReadabilityInfo(undefined);
+        verifyDefaultEmptyReadabilityInfo(readabilityInfo);
+
+        readabilityInfo = getReadabilityInfo(null);
+        verifyDefaultEmptyReadabilityInfo(readabilityInfo);
+
+        readabilityInfo = getReadabilityInfo('');
+        verifyDefaultEmptyReadabilityInfo(readabilityInfo);
+    });
+
+    // Sentence examples and their expected readability ratings found from:
+    // - https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests#Flesch_reading_ease
+    // - https://web.archive.org/web/20160712094308/http://www.mang.canterbury.ac.nz/writing_guide/writing/flesch.shtml
+    test('can handle simple sentence', () => {
+        const text = 'John loves Mary.';
+        const expectedReadabilityRating = 92;
+        const actualReadabilityRatingInfo = getReadabilityInfo(text);
+        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+    });
+
+    test('can handle another simple sentence', () => {
+        const text = 'The cat sat on the mat.';
+        const expectedReadabilityRating = 116;
+        const actualReadabilityRatingInfo = getReadabilityInfo(text);
+        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+    });
+
+    test('can handle a slightly more complicated sentence', () => {
+        const text = 'John has a profound affection for Mary.';
+        const expectedReadabilityRating = 67;
+        const actualReadabilityRatingInfo = getReadabilityInfo(text);
+        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+    });
+
+    test.skip('can handle another slightly more complicated sentence', () => {
+        const text = 'This sentence, taken as a reading passage unto itself, is being used to prove a point.';
+        const expectedReadabilityRating = 69;
+        const actualReadabilityRatingInfo = getReadabilityInfo(text);
+        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+    });
+
+    test.skip('can handle a complicated sentence', () => {
+        const text = 'Even though John is not normally given to a display of his deeper emotions, he allegedly has developed a profound affection for Mary, as compared to the more equable feelings he seems to have for Lucy, Fran and, to a lesser extent, Sue.';
+        const expectedReadabilityRating = 32;
+        const actualReadabilityRatingInfo = getReadabilityInfo(text);
+        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+    });
+
+    test.skip('can handle another complicated sentence', () => {
+        const text = 'The Australian platypus is seemingly a hybrid of a mammal and reptilian creature.';
+        const expectedReadabilityRating = 37.5;
+        const actualReadabilityRatingInfo = getReadabilityInfo(text);
+        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+    });
+
+    function verifyDefaultEmptyReadabilityInfo(info) {
+        expect(info).toBeDefined();
+        expect(info.readabilityRating).toEqual('Nothing to read');
+        expect(isNaN(info.readabilityRatingRaw)).toBeTruthy();
+        expect(info.averageTimeToRead).toEqual('0 min.');
+    }
+
+    function verifyCalculatedReadability(calculatedInfo, expectedRating) {
+        const calculatedRating = calculatedInfo.readabilityRatingRaw;
+        expect(isCalculatedReadabilityWithinAccuracy(calculatedRating, expectedRating)).toBeTruthy();
+    }
+
+    function isCalculatedReadabilityWithinAccuracy(rating, expectedRating) {
+        if (rating === expectedRating) {
+            return true;
+        }
+        const minRating = expectedRating * (1 - accuracyBufferInPercentage);
+        const maxRating = expectedRating * (1 + accuracyBufferInPercentage);
+        console.log(minRating, maxRating, rating);
+        return rating >= minRating && rating <= maxRating;
+    }
 });
