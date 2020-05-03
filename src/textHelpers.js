@@ -3,32 +3,15 @@ const vowels = new Set([
     'e',
     'i',
     'o',
-    'u'
+    'u',
+    'y'
 ]);
-const diphthongs = new Set([
-    'ee',
-    'ea',
-    'oo',
-    'ou',
-    'ow',
-    'ie',
-    'ay',
-    'oi',
-]);
-const triphthongs = new Set([
-    'eau',
-    'iou',
-    'our',
-    'ire',
-    'ier'
-]);
-const digitRegex = /\d+/g;
-const dotRegex = /\.+/g;
-const whitespaceRegex = /[ \t]+/g;
-// https://www.thepunctuationguide.com/
-const terminalPunctuationRegex = /[\.\?!\n]/g;
-const nonTerminalPunctuationWhitespaceReplaceRegex = /\/|\.{2,4}/g;
-const nonTerminalPunctuationEmptyReplaceRegex = /[\"\',;\:\-_\[\]\(\)\{\}<>]/g;
+const vowelRegex = /[aeiouy]+/g;
+const whitespaceRegex = /\s+/g;
+const apostropheRegex = /\'/g;
+const ellipsisRegex = /\.{2,4}/g;
+const nonLetterOrTerminalRegex = /[^a-z\.]/g;
+const terminalPunctuationRegex = /[\.\?!\n\r]+/g; // https://www.thepunctuationguide.com/
 
 // https://en.wikipedia.org/wiki/Words_per_minute#Reading_and_comprehension
 const averageWordsPerMinute = 180;
@@ -38,9 +21,10 @@ const readabilityAverageSyllablesPerWordFactor = 84.6;
 
 export function getReadabilityInfo(text) {
     const normalizedText = normalizeText(text);
+    const readabilityRatingInfo = getReadability(normalizedText);
     return {
-        ...getReadability(normalizedText),
-        averageTimeToRead: getAverageTimeToRead(normalizedText)
+        ...readabilityRatingInfo,
+        averageTimeToRead: getAverageTimeToRead(readabilityRatingInfo.numWords)
     };
 }
 
@@ -48,17 +32,16 @@ export function normalizeText(text) {
     return (text || '')
         .toLowerCase()
         .trim()
-        .replace(digitRegex, '')
-        .replace(nonTerminalPunctuationWhitespaceReplaceRegex, ' ')
-        .replace(nonTerminalPunctuationEmptyReplaceRegex, '')
+        .replace(apostropheRegex, '')
+        .replace(ellipsisRegex, ' ')
         .replace(terminalPunctuationRegex, '.')
-        .replace(dotRegex, '.')
+        .replace(nonLetterOrTerminalRegex, ' ')
         .replace(whitespaceRegex, ' ')
         .trim();
 }
 
-function getAverageTimeToRead(text) {
-    const averageTime = Math.ceil(getNumWords(text) / averageWordsPerMinute);
+function getAverageTimeToRead(numWords) {
+    const averageTime = Math.ceil(numWords / averageWordsPerMinute);
     return `${averageTime} min.`;
 }
 
@@ -67,14 +50,18 @@ function getReadability(text) {
     const numSentences = getNumSentences(text);
     const numSyllables = getNumSyllablesFromText(text);
 
-    const readability = (
+    const readabilityRatingRaw = (
         readabilityConstantFactor -
         readabilityAverageWordsPerSentenceFactor * (numWords / numSentences) -
         readabilityAverageSyllablesPerWordFactor * (numSyllables / numWords)
     );
+
     return {
-        readabilityRating: getReadabilityMapping(readability),
-        readabilityRatingRaw: readability
+        numWords,
+        numSentences,
+        numSyllables,
+        readabilityRating: getReadabilityMapping(readabilityRatingRaw),
+        readabilityRatingRaw
     };
 }
 
@@ -130,23 +117,10 @@ function getNumSyllablesFromText(text) {
 function getNumSyllables(word) {
     const wordLength = (word || '').length;
     let numSyllables = 0;
-    let tmpStr;
 
     for (let i = 0; i < wordLength; i++) {
         if (vowels.has(word[i])) {
             numSyllables++;
-        }
-        if (i + 1 < wordLength) {
-            tmpStr = word.substring(i, i + 2);
-            if (diphthongs.has(tmpStr)) {
-                numSyllables--;
-            }
-        }
-        if (i + 2 < wordLength) {
-            tmpStr = word.substring(i, i + 3);
-            if (triphthongs.has(tmpStr)) {
-                numSyllables--;
-            }
         }
     }
 
