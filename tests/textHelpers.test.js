@@ -107,43 +107,37 @@ describe('getReadabilityInfo Tests', () => {
     test('can handle simple sentence', () => {
         const text = 'John loves Mary.';
         const expectedReadabilityRating = 92;
-        const actualReadabilityRatingInfo = getReadabilityInfo(text);
-        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+        verifyCalculatedReadability(text, expectedReadabilityRating);
     });
 
     test('can handle another simple sentence', () => {
         const text = 'The cat sat on the mat.';
         const expectedReadabilityRating = 116;
-        const actualReadabilityRatingInfo = getReadabilityInfo(text);
-        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+        verifyCalculatedReadability(text, expectedReadabilityRating);
     });
 
     test('can handle a slightly more complicated sentence', () => {
         const text = 'John has a profound affection for Mary.';
         const expectedReadabilityRating = 67;
-        const actualReadabilityRatingInfo = getReadabilityInfo(text);
-        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+        verifyCalculatedReadability(text, expectedReadabilityRating);
     });
 
     test.skip('can handle another slightly more complicated sentence', () => {
         const text = 'This sentence, taken as a reading passage unto itself, is being used to prove a point.';
         const expectedReadabilityRating = 69;
-        const actualReadabilityRatingInfo = getReadabilityInfo(text);
-        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+        verifyCalculatedReadability(text, expectedReadabilityRating);
     });
 
     test.skip('can handle a complicated sentence', () => {
         const text = 'Even though John is not normally given to a display of his deeper emotions, he allegedly has developed a profound affection for Mary, as compared to the more equable feelings he seems to have for Lucy, Fran and, to a lesser extent, Sue.';
         const expectedReadabilityRating = 32;
-        const actualReadabilityRatingInfo = getReadabilityInfo(text);
-        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+        verifyCalculatedReadability(text, expectedReadabilityRating);
     });
 
     test.skip('can handle another complicated sentence', () => {
         const text = 'The Australian platypus is seemingly a hybrid of a mammal and reptilian creature.';
         const expectedReadabilityRating = 37.5;
-        const actualReadabilityRatingInfo = getReadabilityInfo(text);
-        verifyCalculatedReadability(actualReadabilityRatingInfo, expectedReadabilityRating);
+        verifyCalculatedReadability(text, expectedReadabilityRating);
     });
 
     function verifyDefaultEmptyReadabilityInfo(info) {
@@ -153,8 +147,9 @@ describe('getReadabilityInfo Tests', () => {
         expect(info.averageTimeToRead).toEqual('0 min.');
     }
 
-    function verifyCalculatedReadability(calculatedInfo, expectedRating) {
-        const calculatedRating = calculatedInfo.readabilityRatingRaw;
+    function verifyCalculatedReadability(text, expectedRating) {
+        const calculatedReadability = getReadabilityInfo(text);
+        const calculatedRating = calculatedReadability.readabilityRatingRaw;
         expect(isCalculatedReadabilityWithinAccuracy(calculatedRating, expectedRating)).toBeTruthy();
     }
 
