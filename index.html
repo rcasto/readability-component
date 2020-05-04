@@ -34,7 +34,7 @@
 
   <!-- Include script on your page -->
   <!-- You'd probably want to use a specific version in production -->
-  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.5/dist/readability.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.6/dist/readability.min.js"></script>
 
   <!-- Used for Local Testing -->
   <!-- Include script on your page -->
@@ -63,11 +63,14 @@
 
       const textInput = document.getElementById('text-input');
       const textContent = document.getElementById('text-content');
+      const readabilityElem = document.querySelector('read-ability');
 
       textInput.addEventListener('input', () => {
         textContent.textContent = textInput.value;
+        // readabilityElem.setAttribute('data-text', textInput.value);
       });
       textContent.textContent = textInput.value;
+      // readabilityElem.setAttribute('data-text', textInput.value);
     });
   </script>
 </body>

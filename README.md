@@ -54,7 +54,7 @@ window.addEventListener('load', () => {
   </read-ability>
 
   <!-- Include script on your page -->
-  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.5/dist/readability.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.6/dist/readability.min.js"></script>
   <script>
     window.addEventListener('load', () => {
       // Add to custom element registry
