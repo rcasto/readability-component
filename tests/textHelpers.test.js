@@ -71,10 +71,10 @@ describe('normalizeText Tests', () => {
     test('can handle poem like writing format', () => {
         const text = `
             This is a line
-            This is another
-            On and on
-            Rolling over
-            With tumbles
+                This is another
+                    On and on
+                        Rolling over
+                            With tumbles
         `;
         const expectedText = 'this is a line. this is another. on and on. rolling over. with tumbles';
         verifyNormalize(text, expectedText);
