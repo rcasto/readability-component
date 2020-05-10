@@ -8,6 +8,7 @@ const fsWriteFileAsync = promisify(fs.writeFile);
 const mobyHyphenationListFilePath = path.resolve(__dirname, './moby-hyphenation-list.txt');
 const outputFilePath = path.resolve(__dirname, './syllableCount.json');
 const hyphenDelimiterRegex = /¥/g;
+const syllableCountThreshold = 3;
 
 const vowelRegex = /[aeiouy]+/g;
 
@@ -75,6 +76,13 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
     // This is mainly another way to try and trim the data size
     // slightly
     if (wordKey.includes('-')) {
+        return wordMap;
+    }
+
+    // filter out words that have a syllable count greater
+    // than the set threshold
+    // These will no be included in accuracy check
+    if (numSyllables > syllableCountThreshold) {
         return wordMap;
     }
 
