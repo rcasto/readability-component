@@ -53,14 +53,6 @@
 
   <script>
     window.addEventListener('load', () => {
-      // Add to custom element registry
-      // This allows you to define the html tag yourself
-      // in this case: <read-ability></read-ability>
-      //
-      // By default the Readability component is exported
-      // as "Readability" on the global window object
-      customElements.define('read-ability', Readability);
-
       const textInput = document.getElementById('text-input');
       const textContent = document.getElementById('text-content');
       const readabilityElem = document.querySelector('read-ability');
