@@ -6,14 +6,27 @@ const fsReadFileAsync = promisify(fs.readFile);
 const fsWriteFileAsync = promisify(fs.writeFile);
 
 const mobyHyphenationListFilePath = path.resolve(__dirname, './moby-hyphenation-list.txt');
+const commonWordsFilePath = path.resolve(__dirname, './common-english-words.txt');
 const outputFilePath = path.resolve(__dirname, './syllableCount.json');
 const hyphenDelimiterRegex = /¥/g;
-const syllableCountThreshold = 3;
+const nonLetterOrDelimiterRegex = /[^a-z¥]/g;
+const syllableCountThreshold = 6;
 
 const vowelRegex = /[aeiouy]+/g;
+const whitespaceRegex = /\s+/g;
 
 let numWords = 0;
 let numCorrect = 0;
+let incorrectWordsThatAreCommon = 0;
+
+function normalizeText(text) {
+    return (text || '')
+        .toLowerCase()
+        .trim()
+        .replace(nonLetterOrDelimiterRegex, '')
+        .replace(whitespaceRegex, ' ')
+        .trim();
+}
 
 function prettyPrint(obj) {
     return JSON.stringify(obj, null, 2);
@@ -63,6 +76,7 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
     encoding: 'utf8'
 })
 .then(txt => txt.split('\n'))
+.then(words => words.map(word => normalizeText(word)))
 .then(words => words.map(word => word.replace(hyphenDelimiterRegex, ' ')))
 .then(words => words.reduce((wordMap, word) => {
     const wordTokens = word.trim().split(' ');
@@ -98,6 +112,24 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
 
     return wordMap;
 }, {}))
-.then(words => fsWriteFileAsync(outputFilePath, prettyPrint(words), 'utf8'))
-.then(() => console.log(numCorrect, numWords - numCorrect, numWords, numCorrect / numWords * 100))
+.then(async wordMap => {
+    const commonWordsString = await fsReadFileAsync(commonWordsFilePath, {
+        encoding: 'utf8'
+    });
+    const popularWordMap = {};
+
+    commonWordsString
+        .split('\n')
+        .map(commonWord => normalizeText(commonWord))
+        .forEach(commonWord => {
+            if (wordMap[commonWord]) {
+                popularWordMap[commonWord] = wordMap[commonWord];
+                incorrectWordsThatAreCommon++;
+            }
+        });
+
+    return popularWordMap;
+})
+.then(wordMap => fsWriteFileAsync(outputFilePath, prettyPrint(wordMap), 'utf8'))
+.then(() => console.log(numCorrect, numWords - numCorrect, incorrectWordsThatAreCommon, numWords, numCorrect / numWords * 100))
 .catch(err => console.error(err));
