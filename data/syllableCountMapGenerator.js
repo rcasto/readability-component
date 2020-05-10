@@ -16,6 +16,7 @@ const vowelRegex = /[aeiouy]+/g;
 const whitespaceRegex = /\s+/g;
 
 let numWords = 0;
+let numWordsFilteredOut = 0;
 let numCorrect = 0;
 let incorrectWordsThatAreCommon = 0;
 
@@ -93,10 +94,9 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
     //
     // This is mainly another way to try and trim the data size
     // slightly
-    if (wordKey.includes('-')) {
-        return wordMap;
-    }
-    if (wordKey.includes(' ')) {
+    if (wordKey.includes('-') ||
+        wordKey.includes(' ')) {
+        numWordsFilteredOut++;
         return wordMap;
     }
 
@@ -104,6 +104,7 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
     // than the set threshold
     // These will no be included in accuracy check
     if (numSyllables > syllableCountThreshold) {
+        numWordsFilteredOut++;
         return wordMap;
     }
 
@@ -139,10 +140,12 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
 })
 .then(wordMap => fsWriteFileAsync(outputFilePath, prettyPrint(wordMap), 'utf8'))
 .then(() => {
-    console.log(`# correct:\t\t${numCorrect}`);
-    console.log(`# wrong:\t\t${numWords - numCorrect}`);
-    console.log(`# common words wrong:\t${incorrectWordsThatAreCommon}`);
-    console.log(`# words:\t\t${numWords}`);
-    console.log(`% correct overall:\t${numCorrect / numWords * 100}`);
+    console.log(`# correct:\t\t\t${numCorrect}`);
+    console.log(`# wrong:\t\t\t${numWords - numCorrect}`);
+    console.log(`# common words wrong:\t\t${incorrectWordsThatAreCommon}`);
+    console.log(`# words used for calculation:\t${numWords}`);
+    console.log(`# words filtered out:\t\t${numWordsFilteredOut}`);
+    console.log(`# total words in corpus:\t${numWords + numWordsFilteredOut}`);
+    console.log(`% correct overall:\t\t${numCorrect / numWords * 100}`);
 })
 .catch(err => console.error(err));
