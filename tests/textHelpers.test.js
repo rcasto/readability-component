@@ -100,6 +100,15 @@ describe('getReadabilityInfo Tests', () => {
         verifyDefaultEmptyReadabilityInfo(readabilityInfo);
     });
 
+    test('can handle couple end delimiter followed by no space', () => {
+        const text = 'Test time';
+        const expectedReadability = {
+            numSentences: 1,
+            numWords: 2
+        };
+        verifyCalculatedReadability(text, expectedReadability);
+    });
+
     // Sentence examples and their expected readability ratings found from:
     // - https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests#Flesch_reading_ease
     // - https://web.archive.org/web/20160712094308/http://www.mang.canterbury.ac.nz/writing_guide/writing/flesch.shtml
@@ -184,6 +193,15 @@ describe('getReadabilityInfo Tests', () => {
         const expectedReadability = {
             numSentences: 5,
             numWords: 14
+        };
+        verifyCalculatedReadability(text, expectedReadability);
+    });
+
+    test('can handle no separation from end delimiter to next word', () => {
+        const text = `test one.test two`;
+        const expectedReadability = {
+            numSentences: 2,
+            numWords: 4
         };
         verifyCalculatedReadability(text, expectedReadability);
     });

@@ -86,6 +86,7 @@ function getReadabilityMapping(readability) {
 
 function getWords(text) {
     return (text || '')
+        .replace('.', ' ')
         .split(whitespaceRegex)
         .filter(word => (word || '').trim());
 }
