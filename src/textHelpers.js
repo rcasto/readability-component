@@ -1,3 +1,5 @@
+import wordSyllableCountCorpus from '../data/syllableCount.json';
+
 // Normalization Regular Expressions
 const whitespaceRegex = /\s+/g;
 const apostropheRegex = /\'/g;
@@ -111,6 +113,13 @@ function getNumSyllablesFromText(text) {
 
 function getNumSyllables(word) {
     word = word || '';
+
+    // Look up word in corpus, if it's there
+    // use its recorded syllable count, otherwise
+    // procceed onward to use heuristic
+    if (wordSyllableCountCorpus[word]) {
+        return wordSyllableCountCorpus[word];
+    }
 
     const wordLength = word.length;
     let numSyllables = 0;
