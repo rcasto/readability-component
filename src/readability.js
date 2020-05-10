@@ -83,3 +83,14 @@ export default class Readability extends HTMLElement {
     this.readabilityAverageReadingTimeDiv.textContent = averageTimeToRead;
   }
 }
+
+/*
+  Register or associate the web component
+  with a <read-ability></read-ability> element
+*/
+try {
+  customElements.define('read-ability', Readability);
+} catch(err) {
+  // https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define#Exceptions
+  console.error(err);
+}
