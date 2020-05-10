@@ -130,5 +130,11 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
     return popularWordMap;
 })
 .then(wordMap => fsWriteFileAsync(outputFilePath, prettyPrint(wordMap), 'utf8'))
-.then(() => console.log(numCorrect, numWords - numCorrect, incorrectWordsThatAreCommon, numWords, numCorrect / numWords * 100))
+.then(() => {
+    console.log(`# correct:\t\t${numCorrect}`);
+    console.log(`# wrong:\t\t${numWords - numCorrect}`);
+    console.log(`# common words wrong:\t${incorrectWordsThatAreCommon}`);
+    console.log(`# words:\t\t${numWords}`);
+    console.log(`% correct overall:\t${numCorrect / numWords * 100}`);
+})
 .catch(err => console.error(err));
