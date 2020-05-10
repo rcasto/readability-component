@@ -19,6 +19,7 @@ let numWords = 0;
 let numWordsFilteredOut = 0;
 let numCorrect = 0;
 let incorrectWordsThatAreCommon = 0;
+let incorrectSyllableCountDistance = 0;
 
 function normalizeText(text) {
     return (text || '')
@@ -85,7 +86,7 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
         .filter(wordToken => !!wordToken);
     const wordKey = wordTokens.join('');
     const numSyllables = wordTokens.length;
-    const numCalculatedSyllabled = getNumSyllables(wordKey);
+    const numCalculatedSyllables = getNumSyllables(wordKey);
 
     // filter out words with hyphens in them
     // don't include them in accuracy check either
@@ -110,9 +111,10 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
 
     // filter out words that the heuristic is correct on
     // but use them for accuracy calculation
-    if (numSyllables === numCalculatedSyllabled) {
+    if (numSyllables === numCalculatedSyllables) {
         numCorrect++;
     } else {
+        incorrectSyllableCountDistance += Math.abs(numSyllables - numCalculatedSyllables);
         wordMap[wordKey] = numSyllables;
     }
 
@@ -140,12 +142,14 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
 })
 .then(wordMap => fsWriteFileAsync(outputFilePath, prettyPrint(wordMap), 'utf8'))
 .then(() => {
-    console.log(`# correct:\t\t\t${numCorrect}`);
-    console.log(`# wrong:\t\t\t${numWords - numCorrect}`);
-    console.log(`# common words wrong:\t\t${incorrectWordsThatAreCommon}`);
-    console.log(`# words used for calculation:\t${numWords}`);
-    console.log(`# words filtered out:\t\t${numWordsFilteredOut}`);
-    console.log(`# total words in corpus:\t${numWords + numWordsFilteredOut}`);
-    console.log(`% correct overall:\t\t${numCorrect / numWords * 100}`);
+    const numIncorrect = numWords - numCorrect;
+    console.log(`# correct:\t\t\t\t\t${numCorrect}`);
+    console.log(`# wrong:\t\t\t\t\t${numIncorrect}`);
+    console.log(`# common words wrong:\t\t\t\t${incorrectWordsThatAreCommon}`);
+    console.log(`# words used for calculation:\t\t\t${numWords}`);
+    console.log(`# words filtered out:\t\t\t\t${numWordsFilteredOut}`);
+    console.log(`# total words in corpus:\t\t\t${numWords + numWordsFilteredOut}`);
+    console.log(`% correct overall:\t\t\t\t${numCorrect / numWords * 100}`);
+    console.log(`average incorrect syllable count difference:\t${incorrectSyllableCountDistance / numIncorrect}`);
 })
 .catch(err => console.error(err));
