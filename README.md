@@ -11,26 +11,13 @@ To determine the average time to read the content, an average reading speed of 1
 
 ## Usage
 
-### Via module bundler
-```javascript
-import Readability from 'readability-component';
-
-window.addEventListener('load', () => {
-    customElements.define('read-ability', Readability);
-});
-```
-
 ### Via script tag
 ```html
-<!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Readability Web Component</title>
-
   <style>
     read-ability {
       /* Allow customization of some of the Web components styling via
@@ -44,7 +31,6 @@ window.addEventListener('load', () => {
     }
   </style>
 </head>
-
 <body>
   <read-ability>
     <!-- This can be anything, this is your content -->
@@ -55,21 +41,24 @@ window.addEventListener('load', () => {
 
   <!-- Include script on your page -->
   <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.6/dist/readability.min.js"></script>
-  <script>
-    window.addEventListener('load', () => {
-      // Add to custom element registry
-      // This allows you to define the html tag yourself
-      // in this case: <read-ability></read-ability>
-      //
-      // By default the Readability component is exported
-      // as "Readability" on the global window object
-      customElements.define('read-ability', Readability);
-    });
-  </script>
 </body>
-
 </html>
 ```
+
+### Via module bundler
+1. Install package via package manager of your choice.
+```
+npm install readability-component
+```
+
+2. `import 'readability-component'` as part of your app module, it should then be included as part of your bundle.
+```javascript
+import 'readability-component';
+
+// Rest of your code...
+```
+
+3. You can now use `<read-ability></read-ability>` in your app views!
 
 ## Resources
 - https://www.howmanysyllables.com/howtocountsyllables
