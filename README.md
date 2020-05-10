@@ -40,7 +40,7 @@ To determine the average time to read the content, an average reading speed of 1
   </read-ability>
 
   <!-- Include script on your page -->
-  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.8/dist/readability.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/readability-component@1.0.9/dist/readability.min.js"></script>
 </body>
 </html>
 ```
