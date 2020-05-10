@@ -8,7 +8,7 @@ const fsWriteFileAsync = promisify(fs.writeFile);
 const mobyHyphenationListFilePath = path.resolve(__dirname, './moby-hyphenation-list.txt');
 const commonWordsFilePath = path.resolve(__dirname, './common-english-words.txt');
 const outputFilePath = path.resolve(__dirname, './syllableCount.json');
-const hyphenDelimiterRegex = /¥/g;
+const hyphenDelimiter = '¥';
 const nonLetterOrDelimiterRegex = /[^a-z¥]/g;
 const syllableCountThreshold = 6;
 
@@ -77,9 +77,8 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
 })
 .then(txt => txt.split('\n'))
 .then(words => words.map(word => normalizeText(word)))
-.then(words => words.map(word => word.replace(hyphenDelimiterRegex, ' ')))
 .then(words => words.reduce((wordMap, word) => {
-    const wordTokens = word.trim().split(' ');
+    const wordTokens = word.trim().split(hyphenDelimiter);
     const wordKey = wordTokens.join('').toLowerCase();
     const numSyllables = wordTokens.length;
     const numCalculatedSyllabled = getNumSyllables(wordKey);
