@@ -11,6 +11,7 @@
     "build": "npm-run-all clean --parallel build:*",
     "build:dev": "rollup --config rollup/rollup.config.dev.js",
     "build:prod": "rollup --config rollup/rollup.config.prod.js",
+    "generate-syllable-map": "node data/syllableCountMapGenerator.js",
     "clean": "rimraf dist",
     "test": "jest",
     "prepublishOnly": "npm-run-all test build"
