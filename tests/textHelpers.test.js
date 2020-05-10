@@ -164,11 +164,26 @@ describe('getReadabilityInfo Tests', () => {
     });
 
     test('can handle multiple sentences', () => {
-        const text = 'A sentence. B sentence. C sentence. D sentence';
+        const text = 'A sentence. B sentence? C sentence! D sentence';
         const expectedReadability = {
             // readabilityRatingRaw: 67,
             numSentences: 4,
             numWords: 8
+        };
+        verifyCalculatedReadability(text, expectedReadability);
+    });
+
+    test('can handle poem like structure for readability calculations', () => {
+        const text = `
+            This is a line
+                This is another
+                    On and on
+                        Rolling over
+                            With tumbles
+        `;
+        const expectedReadability = {
+            numSentences: 5,
+            numWords: 14
         };
         verifyCalculatedReadability(text, expectedReadability);
     });
