@@ -36,6 +36,7 @@
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/preset-env": "7.9.6",
     "@rollup/plugin-babel": "5.0.0",
+    "@rollup/plugin-json": "4.0.3",
     "babel-jest": "26.0.1",
     "http-server": "0.12.3",
     "jest": "26.0.1",
