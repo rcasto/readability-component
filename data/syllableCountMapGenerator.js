@@ -9,7 +9,7 @@ const mobyHyphenationListFilePath = path.resolve(__dirname, './moby-hyphenation-
 const commonWordsFilePath = path.resolve(__dirname, './common-english-words.txt');
 const outputFilePath = path.resolve(__dirname, './syllableCount.json');
 const hyphenDelimiter = '¥';
-const nonLetterOrDelimiterRegex = /[^a-z¥]/g;
+const nonLetterSpaceOrDelimiterRegex = /[^a-z ¥]/g;
 const syllableCountThreshold = 6;
 
 const vowelRegex = /[aeiouy]+/g;
@@ -23,7 +23,7 @@ function normalizeText(text) {
     return (text || '')
         .toLowerCase()
         .trim()
-        .replace(nonLetterOrDelimiterRegex, '')
+        .replace(nonLetterSpaceOrDelimiterRegex, '')
         .replace(whitespaceRegex, ' ')
         .trim();
 }
@@ -78,17 +78,25 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
 .then(txt => txt.split('\n'))
 .then(words => words.map(word => normalizeText(word)))
 .then(words => words.reduce((wordMap, word) => {
-    const wordTokens = word.trim().split(hyphenDelimiter);
-    const wordKey = wordTokens.join('').toLowerCase();
+    const wordTokens = word
+        .trim()
+        .split(hyphenDelimiter)
+        .filter(wordToken => !!wordToken);
+    const wordKey = wordTokens.join('');
     const numSyllables = wordTokens.length;
     const numCalculatedSyllabled = getNumSyllables(wordKey);
 
     // filter out words with hyphens in them
     // don't include them in accuracy check either
     //
+    // also filter out words that have spaces in them
+    //
     // This is mainly another way to try and trim the data size
     // slightly
     if (wordKey.includes('-')) {
+        return wordMap;
+    }
+    if (wordKey.includes(' ')) {
         return wordMap;
     }
 
