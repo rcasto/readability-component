@@ -151,5 +151,6 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
     console.log(`# total words in corpus:\t\t\t${numWords + numWordsFilteredOut}`);
     console.log(`% correct overall:\t\t\t\t${numCorrect / numWords * 100}`);
     console.log(`average incorrect syllable count difference:\t${incorrectSyllableCountDistance / numIncorrect}`);
+    console.log();
 })
 .catch(err => console.error(err));
