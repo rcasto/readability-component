@@ -1,32 +1,32 @@
 import { getReadabilityInfo } from './textHelpers.js';
 
-const templateContent = `
-  <style>
-    .readability-container {
-      display: flex;
-      margin: var(--readability-margin, 0);
-      font-size: var(--readability-font-size, 0.8em);
-      font-weight: var(--readability-font-weight, lighter);
-      opacity: var(--readability-opacity, 0.8);
-      justify-content: var(--readability-justify-content, end);
-    }
-    .readability-container .readability-spacer {
-      margin: var(--readability-spacer-margin, 0 6px);
-      border: 1px solid;
-    }
-  </style>
-  <div class="readability-container">
-    <div class="readability-level"></div>
-    <div class="readability-spacer"></div>
-    <div class="readability-time"></div>
-  </div>
-  <slot name="readable-text"></slot>
-`;
-
-const template = document.createElement('template');
-template.innerHTML = templateContent;
-
 export default class Readability extends HTMLElement {
+  static template = `
+    <style>
+      .readability-container {
+        display: flex;
+        margin: var(--readability-margin, 0);
+        font-size: var(--readability-font-size, 0.8em);
+        font-weight: var(--readability-font-weight, lighter);
+        opacity: var(--readability-opacity, 0.8);
+        justify-content: var(--readability-justify-content, end);
+      }
+      .readability-container .readability-spacer {
+        margin: var(--readability-spacer-margin, 0 6px);
+        border: 1px solid;
+      }
+    </style>
+    <div class="readability-container">
+      <div class="readability-level"></div>
+      <div class="readability-spacer"></div>
+      <div class="readability-time"></div>
+    </div>
+    <slot name="readable-text"></slot>
+  `;
+  /**
+   * @type {HTMLTemplateElement}
+   */
+  static templateElem = null;
   static get observedAttributes() {
     return [
       'data-text'
@@ -35,6 +35,11 @@ export default class Readability extends HTMLElement {
 
   constructor() {
     super();
+
+    if (!Readability.templateElem) {
+      Readability.templateElem = document.createElement('template');
+      Readability.templateElem.innerHTML = Readability.template;
+    }
 
     this.readabilityLevelDiv = null;
     this.readabilityAverageReadingTimeDiv = null;
@@ -88,9 +93,11 @@ export default class Readability extends HTMLElement {
   Register or associate the web component
   with a <read-ability></read-ability> element
 */
-try {
-  customElements.define('read-ability', Readability);
-} catch(err) {
-  // https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define#Exceptions
-  console.error(err);
-}
+(function () {
+  const customElementName = 'read-ability';
+  if (customElements.get(customElementName)) {
+    console.error(`There is already a custom element registered under the name ${customElementName}`);
+  } else {
+    customElements.define(customElementName, Readability);
+  }
+}());
