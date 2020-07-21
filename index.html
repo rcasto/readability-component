@@ -11,14 +11,6 @@
     *, *::before, *::after {
       box-sizing: border-box;
     }
-  
-    textarea {
-      max-width: 540px;
-      width: 100%;
-      height: 120px;
-      margin: 0 auto 12px auto;
-      display: block;
-    }
 
     read-ability {
       /* Allow customization of some of the Web components styling via
@@ -34,7 +26,7 @@
 
   <!-- Include script on your page -->
   <!-- You'd probably want to use a specific version in production -->
-  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.9/dist/readability.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/readability-component@1.0.10/dist/readability.min.js"></script>
 
   <!-- Used for Local Testing -->
   <!-- Include script on your page -->
@@ -43,28 +35,12 @@
 </head>
 
 <body>
-  <textarea id="text-input">The cat sat on the mat.</textarea>
   <read-ability>
     <!-- This can be anything, this is your content -->
     <!-- Make sure to add slot="readable-text" attribute to your content if you also want it to be rendered -->
     <!-- If you neglect to add the slot, then the readability of any text contained by the component is computed, without displaying it -->
-    <div id="text-content" slot="readable-text"></div>
+    <div contenteditable slot="readable-text">You can edit me to whatever you want. The readability will be updated to reflect whatever content you add.</div>
   </read-ability>
-
-  <script>
-    window.addEventListener('load', () => {
-      const textInput = document.getElementById('text-input');
-      const textContent = document.getElementById('text-content');
-      const readabilityElem = document.querySelector('read-ability');
-
-      textInput.addEventListener('input', () => {
-        textContent.textContent = textInput.value;
-        // readabilityElem.setAttribute('data-text', textInput.value);
-      });
-      textContent.textContent = textInput.value;
-      // readabilityElem.setAttribute('data-text', textInput.value);
-    });
-  </script>
 </body>
 
 </html>
