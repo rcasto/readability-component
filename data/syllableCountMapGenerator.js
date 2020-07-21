@@ -15,7 +15,6 @@ const hyphenDelimiter = '¥';
 const nonLetterSpaceOrDelimiterRegex = /[^a-z ¥]/g;
 const syllableCountThreshold = 6;
 
-const vowelRegex = /[aeiouy]+/g;
 const whitespaceRegex = /\s+/g;
 
 let numWords = 0;
