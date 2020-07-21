@@ -80,8 +80,10 @@ function getReadabilityMapping(readability) {
         return 'Fairly difficult to read';
     } else if (readability < 50 && readability >= 30) {
         return 'Difficult to read';
+    } else if (readability < 30 && readability >= 10) {
+        return 'Very difficult to read';
     }
-    return 'Very difficult to read';
+    return 'Extremely difficult to read';
 }
 
 function getWords(text) {
