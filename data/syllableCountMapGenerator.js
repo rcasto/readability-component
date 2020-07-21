@@ -1,7 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const promisify = require('util').promisify;
+import fs from 'fs';
+import path from 'path';
+import { promisify } from 'util';
+import { getNumSyllables } from '../src/textHelpers.js';
 
+// https://stackoverflow.com/a/57972193
+const __dirname = path.resolve('data');
 const fsReadFileAsync = promisify(fs.readFile);
 const fsWriteFileAsync = promisify(fs.writeFile);
 
@@ -34,46 +37,6 @@ function prettyPrint(obj) {
     return JSON.stringify(obj, null, 2);
 }
 
-function getNumSyllables(word) {
-    word = word || '';
-
-    const wordLength = word.length;
-    let numSyllables = 0;
-
-    // substitute 'a' as the universal vowel
-    // replacing consecutive vowels with a single occurrence
-    const vowelReplacedWord =
-        word.replace(vowelRegex, 'a');
-    const vowelReplacedWordLength = vowelReplacedWord.length;
-
-    for (let i = 0; i < vowelReplacedWordLength; i++) {
-        if (vowelReplacedWord[i] === 'a') {
-            numSyllables++;
-        }
-    }
-
-    // At this point, numSyllables essentially
-    // is equivalent to the number of consolidated vowels
-
-    // remove silent 'e' heuristic
-    if (
-        numSyllables >= 2 &&
-        word[wordLength - 1] === 'e'
-    ) {
-        return getNumSyllables(word.slice(0, wordLength - 1));
-    }
-    // remove silent 'ed' heuristic
-    else if (
-        numSyllables >= 2 &&
-        word[wordLength - 2] === 'e' &&
-        word[wordLength - 1] === 'd'
-    ) {
-        return getNumSyllables(word.slice(0, wordLength - 2));
-    }
-
-    return numSyllables;
-}
-
 fsReadFileAsync(mobyHyphenationListFilePath, {
     encoding: 'utf8'
 })
@@ -86,7 +49,7 @@ fsReadFileAsync(mobyHyphenationListFilePath, {
         .filter(wordToken => !!wordToken);
     const wordKey = wordTokens.join('');
     const numSyllables = wordTokens.length;
-    const numCalculatedSyllables = getNumSyllables(wordKey);
+    const numCalculatedSyllables = getNumSyllables(wordKey, true);
 
     // filter out words with hyphens in them
     // don't include them in accuracy check either

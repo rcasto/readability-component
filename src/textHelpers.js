@@ -114,13 +114,13 @@ function getNumSyllablesFromText(text) {
     }, 0);
 }
 
-function getNumSyllables(word) {
+export function getNumSyllables(word, bypassCorpus = false) {
     word = word || '';
 
     // Look up word in corpus, if it's there
     // use its recorded syllable count, otherwise
     // procceed onward to use heuristic
-    if (wordSyllableCountCorpus[word]) {
+    if (!bypassCorpus && wordSyllableCountCorpus[word]) {
         return wordSyllableCountCorpus[word];
     }
 
