@@ -55,7 +55,7 @@ export default class Readability extends HTMLElement {
     const shadowRoot = this.attachShadow({
       mode: 'open'
     });
-    const templateClone = template.content.cloneNode(true);
+    const templateClone = Readability.templateElem.content.cloneNode(true);
 
     shadowRoot.appendChild(templateClone);
 
